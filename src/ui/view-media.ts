@@ -34,21 +34,30 @@ export class Media extends Connected {
 
 
   render() {
-    console.log(`FOUND ${this.mediaClctn}`)
     return html`
     <h3>Media</h3>
     <!-- <a href="/mediaC"><button type="button">Add Media Document</button></a> -->
     <div class="table">
         ${Object.keys(this.mediaClctn).map(key => {
           console.log(`HERE ${key}`)
-          const dcmnt = this.mediaClctn[key];
+          const media = this.mediaClctn[key];
+          const w300 = `https://storage.googleapis.com/bella-strati.appspot.com/publicMedia/300/${media["id"]}${media["type"]}`
+          const w1300 = `https://storage.googleapis.com/bella-strati.appspot.com/publicMedia/1300/${media["id"]}${media["type"]}`
+          const htmlCode = `<img src="${w1300}" alt="${media.name}" />`
+          const markdown = `![${media.name}](${w1300})`
           return html`
             <div class="row">
+              <div><img src=${w300} width=300></img> </div>
               <div class="cell">
-                <button id=${dcmnt["id"]} @click=${this.delete}>delete</button>
+                <div><a href=${w1300}>VIEW FULL FORMAT</a></div>
+                <div class="cell">${markdown}</div>
+                <div class="cell">${htmlCode}</div>
               </div>
-              <div class="cell">${dcmnt["name"]}</div>
+              <div class="cell">
+                <button id=${media["name"]} @click=${this.delete}>delete</button>
+              </div>
             </div>
+            <hr/>
           `;
         })}
       </div>

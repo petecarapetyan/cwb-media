@@ -10,8 +10,9 @@ import { firestoreLoader } from "../firebase";
 // field, fields, type are used as document attributes, and corresponds to the elements of a schema as you would find in a database schema, as well as fields in a firestore document
 
 export interface Media {
-  id?: string,
-  name: string
+  id: string,
+  name: string,
+  type?: string,
 }
 
 
@@ -37,40 +38,40 @@ export default createModel({
     focusDcmnt(state, focusDcmnt) {
       return { ...state, focusDcmnt };
     },
-    deleteDcmnt(state, key: string) {
+    deleteDcmnt(state, _key: string) {
       const mediaClctn = state.mediaClctn;
-      delete mediaClctn[key];
+      // delete mediaClctn[_key]; disabled
       return { ...state, mediaClctn };
     }
 
   },
 
 
-  effects: (store: Store) => ({
+  effects: (_store: Store) => ({
 
-    async delete(key: string) {
-      const dispatch = store.getDispatch();
-      const db = await firestoreLoader;
-      if (!!key ) {
-        const ref = db.collection("media").doc(key)
-        if (!!ref) {
-            ref.delete()
-            .then(function (_deleted) {
-              console.log("Deleted ID: ", key);
-              dispatch.media.deleteDcmnt(key);
-            })
-            .catch(function (error) {
-              console.error("Error adding document: ", error);
-            });
-          }
-      } else {
-        console.log("PETE YOU EFFED UP")
-      }
+    async delete(_key: string) {
+      // const dispatch = store.getDispatch();
+      // const db = await firestoreLoader;
+      // if (!!key ) {
+      //   const ref = db.collection("media").doc(key)
+      //   if (!!ref) {
+      //       ref.delete()
+      //       .then(function (_deleted) {
+      //         console.log("Deleted ID: ", key);
+      //         dispatch.media.deleteDcmnt(key);
+      //       })
+      //       .catch(function (error) {
+      //         console.error("Error adding document: ", error);
+      //       });
+      //     }
+      // } else {
+      //   console.log("PETE YOU EFFED UP")
+      // }
     },
 
     async updateDcmnt(data: Media) {
       const db = await firestoreLoader;
-      const key: string = ""+data.id;
+      const key: string = ""+data.name;
       if (!!key ) {
         const ref = db.collection("media").doc(key)
         if (!!ref) {

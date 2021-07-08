@@ -20,9 +20,8 @@ export default createModel({
 
   reducers: {},
 
-  effects: (store: Store) => ({
+  effects: (_store: Store) => ({
     async nullAllExcept(_running: string[]) {
-      console.log(store)//to keep ts lint from complaining
       const db = await firestoreLoader;
       allCollections.forEach(collection => {
         if (!_running.includes(collection)) {
@@ -37,20 +36,24 @@ export default createModel({
 
             async media() {
               const db = await firestoreLoader;
-              let ref = db.collection("media");
+              let ref = db.collection("publicMedia_300");
               if (ref!!) {
-                const dispatch = store.getDispatch();
-                dispatch.retrieve.nullAllExcept(["media"]);
+                const dispatch = _store.getDispatch();
+                await dispatch.retrieve.nullAllExcept(["publicMedia_300"]);
                 ref.onSnapshot(snapshot => {
                   let changes = snapshot.docChanges();
                   changes.forEach(change => {
-                    console.log(`"INSTANTIATING Media${JSON.stringify(change.doc.data()["name"])}`);
                     if (change.type == "added") {
+                      console.log(`"INSTANTIATING Media${JSON.stringify(change.doc.data())}`);
+                      const name = change.doc.id.substring(change.doc.id.indexOf("_") + 1, change.doc.id.length)
                       const dcmnt: Media = {
                         id: change.doc.id,
-                        name: change.doc.data()["name"]
+                        name,
+                        type: change.doc.data()["file"]
                       };
-                      dispatch.media.upsert(dcmnt);
+                      if(dcmnt.name!==undefined){
+                        dispatch.media.upsert(dcmnt);
+                      }
                     }
                     if (change.type == "removed") {
                       dispatch.media.deleteDcmnt(change.doc.id);
