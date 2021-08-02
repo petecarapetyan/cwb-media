@@ -41,8 +41,8 @@ export class Media extends Connected {
         ${Object.keys(this.mediaClctn).map(key => {
           console.log(`HERE ${key}`)
           const media = this.mediaClctn[key];
-          const w300 = `https://storage.googleapis.com/bella-strati.appspot.com/publicMedia/300/${media["id"]}${media["type"]}`
-          const w1300 = `https://storage.googleapis.com/bella-strati.appspot.com/publicMedia/1300/${media["id"]}${media["type"]}`
+          const w300 = `https://storage.googleapis.com/fauxmazon.appspot.com/publicMedia/300/${media["id"]}${media["type"]}`
+          const w1300 = `https://storage.googleapis.com/fauxmazon.appspot.com/publicMedia/1300/${media["id"]}${media["type"]}`
           const htmlCode = `<img src="${w1300}" alt="${media.name}" />`
           const markdown = `![${media.name}](${w1300})`
           return html`
