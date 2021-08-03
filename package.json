@@ -4,7 +4,7 @@
   "description": "firebase rdx app shell base element",
   "main": "index.js",
   "scripts": {
-    "promote": "rollup -c && cp docs/cwbMedia* ../cwb-mpa-test-site/docs/_assets/",
+    "promote": "rollup -c && cp docs/cwbMedia* ../cwb-mpa-test-site/docs/",
     "build": "rollup -c && node server.js",
     "start": "node server.js"
   },
